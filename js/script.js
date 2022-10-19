@@ -17,7 +17,7 @@ const playAgainButton = document.querySelector(".play-again");
 //test word
 let word = "magnolia";
 //array of all the letters player guessed
-const guessedLetters = [];
+let guessedLetters = [];
 //number of guesses the player has left (will change)
 let remainingGuesses = 8;
 
@@ -37,7 +37,7 @@ const placeholder = function(word){
     const placeholderLetters = [];
     //for each letter of the word, log out the letter and push a dot (4 letters = 4 dots)
     for (const letter of word) {
-        console.log(letter);
+        // console.log(letter);
         placeholderLetters.push("●");
     }
     //turn array back into a word (without spaces or separators)
@@ -135,7 +135,8 @@ const countRemainingGuesses = function(guess) {
    }
 
    if (remainingGuesses === 0) {
-    remainingPar.innerText = `Game over! The word was ${upperWord}.`
+    message.innerText = `Game over! The word was ${upperWord}.`
+    startOver();
    } else if (remainingGuesses === 1) {
     remainingSpan.innerText = `${remainingGuesses} guess`;
    } else {
@@ -147,7 +148,31 @@ const didIWin = function (){
     if (wordInProgress.innerText === word.toUpperCase()){
         message.classList.add("win");
         message.innerHTML = '<p class="highlight">You guessed the correct word! Congrats!</p>'
+        startOver();
     }
 };
 
+const startOver = function(){
+    guessButton.classList.add("hide");
+    remainingPar.classList.add("hide");
+    guessedLettersElement.classList.add("hide");
+    playAgainButton.classList.remove("hide");
+}
 
+playAgainButton.addEventListener("click", function(e){
+    message.classList.remove("win");
+    message.innerText = "";
+
+    guessedLettersElement.innerText = "";
+    remainingGuesses = 8;
+    guessedLetters = [];
+    remainingSpan.innerText = `${remainingGuesses} guesses`;
+
+    guessButton.classList.remove("hide");
+    remainingPar.classList.remove("hide");
+    guessedLettersElement.classList.remove("hide");
+
+    playAgainButton.classList.add("hide");
+
+    getWord();
+});
